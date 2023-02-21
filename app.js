@@ -9,12 +9,8 @@ const UsersController = require('./controllers/userController')
 const SubscribersController = require('./controllers/subscribersController')
 
 //initializing controller
-const usersController = new UsersController(db.users, db.types, db.subscribers)
-const subscribersController = new SubscribersController(
-  db.subscribers,
-  db.users,
-  db.types
-)
+const usersController = new UsersController(db.users, db.types)
+const subscribersController = new SubscribersController(db.subscribers)
 
 // import routers
 const UsersRouter = require('./routers/usersRouter')

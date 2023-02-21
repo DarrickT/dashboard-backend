@@ -14,14 +14,6 @@ class UsersRouter {
       '/allTypes/:usersId',
       this.controller.getAllTypes.bind(this.controller)
     )
-    router.post(
-      '/addSubscriber',
-      this.controller.addSubcriber.bind(this.controller)
-    )
-    router.get(
-      '/allSubscriber/:usersId',
-      this.controller.getAllSubscribers.bind(this.controller)
-    )
 
     return router
   }

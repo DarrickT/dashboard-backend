@@ -7,6 +7,41 @@ class SubscribersController extends BaseController {
     super(model)
   }
 
+  // add subscriber for single user
+  async addSubcriber (req, res) {
+    const { fullName, email, date, typesId, usersId } = req.body
+
+    try {
+      const newSubscriber = await this.model.create({
+        fullName: fullName,
+        date: date,
+        email: email,
+        typesId: typesId,
+        usersId: usersId
+      })
+
+      res.status(200).json({ sucess: true, newSubscriber })
+    } catch (error) {
+      res.status(400).json({ error })
+    }
+  }
+  // get all subscribers from single user
+  async getAllSubscribers (req, res) {
+    const { usersId } = req.params
+    if (!usersId) {
+      return res
+        .status(400)
+        .json({ sucess: false, msg: 'you have some missing information' })
+    }
+    try {
+      const allSubscribers = await this.model.findAll({
+        where: { usersId: usersId }
+      })
+      return res.json({ sucess: true, allSubscribers })
+    } catch (error) {
+      res.status(400).json({ error })
+    }
+  }
   //filterByYear
   async filterByYear (req, res) {
     const { usersId, year } = req.params
@@ -27,53 +62,12 @@ class SubscribersController extends BaseController {
           }
         }
       })
-      console.log(startDate, endDate)
+
       return res.json({ sucess: true, dataByYear })
     } catch (error) {
       res.status(400).json({ error })
     }
   }
-
-  // async getAllSubscribers (req, res) {
-  //   const { usersId } = req.params
-  //   if (!usersId) {
-  //     return res
-  //       .status(400)
-  //       .json({ sucess: false, msg: 'you have some missing information' })
-  //   }
-  //   try {
-  //     const allSubscribers = await this.subcribers.findAll({
-  //       where: { usersId: usersId }
-  //     })
-  //     return res.json({ sucess: true, allSubscribers })
-  //   } catch (error) {
-  //     res.status(400).json({ error })
-  //   }
-  // }
-
-  //add new CLient
-  // async addSubcriber (req, res) {
-  //   const { fullName, email, date, typesId } = req.body
-  //   const { usersId } = req.params
-  //   if (!usersId) {
-  //     return res
-  //       .status(400)
-  //       .json({ sucess: false, msg: 'you have some missing information' })
-  //   }
-
-  //   try {
-  //     const newSubscriber = await this.model.create({
-  //       fullName: fullName,
-  //       date: date,
-  //       email: email,
-  //       typesId: typesId
-  //     })
-
-  //     res.status(200).json(newSubscriber)
-  //   } catch (error) {
-  //     res.status(400).json({ error })
-  //   }
-  // }
 
   // //delete Client
   // async deleteClient (req, res) {

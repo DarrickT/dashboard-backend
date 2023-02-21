@@ -3,10 +3,9 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 class UsersController extends BaseController {
-  constructor (model, types, subcribers) {
+  constructor (model, types) {
     super(model)
     this.types = types
-    this.subcribers = subcribers
   }
 
   async signUp (req, res) {
@@ -79,47 +78,6 @@ class UsersController extends BaseController {
         where: { usersId: usersId }
       })
       return res.json({ sucess: true, allTypes })
-    } catch (error) {
-      res.status(400).json({ error })
-    }
-  }
-  // add subscriber for single user
-  async addSubcriber (req, res) {
-    const { fullName, email, date, typesId, usersId } = req.body
-    // if (!fullName || !email || !date || !typesId || !usersId) {
-    //   return res
-    //     .status(400)
-    //     .json({ sucess: false, msg: 'you have some missing information' })
-    // }
-    console.log('anything' + fullName, email, date, typesId, usersId)
-
-    try {
-      const newSubscriber = await this.subcribers.create({
-        fullName: fullName,
-        date: date,
-        email: email,
-        typesId: typesId,
-        usersId: usersId
-      })
-
-      res.status(200).json({ sucess: true, newSubscriber })
-    } catch (error) {
-      res.status(400).json({ error })
-    }
-  }
-  // get all subscribers from single user
-  async getAllSubscribers (req, res) {
-    const { usersId } = req.params
-    if (!usersId) {
-      return res
-        .status(400)
-        .json({ sucess: false, msg: 'you have some missing information' })
-    }
-    try {
-      const allSubscribers = await this.subcribers.findAll({
-        where: { usersId: usersId }
-      })
-      return res.json({ sucess: true, allSubscribers })
     } catch (error) {
       res.status(400).json({ error })
     }

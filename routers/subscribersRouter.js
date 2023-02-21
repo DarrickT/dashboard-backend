@@ -13,6 +13,14 @@ class SubscribersRouter {
       '/filterByYear/:usersId/:year',
       this.controller.filterByYear.bind(this.controller)
     )
+    router.post(
+      '/addSubscriber',
+      this.controller.addSubcriber.bind(this.controller)
+    )
+    router.get(
+      '/allSubscriber/:usersId',
+      this.controller.getAllSubscribers.bind(this.controller)
+    )
 
     // router.post(
     //   '/addSubcriber/:usersId',
