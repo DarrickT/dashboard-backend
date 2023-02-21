@@ -69,23 +69,23 @@ class SubscribersController extends BaseController {
     }
   }
 
-  // //delete Client
-  // async deleteClient (req, res) {
-  //   let id = req.params.id
-  //   await this.model.findByPk(id)
-  //   if (!id) {
-  //     return res.status(404).json({ error: 'no such client exist' })
-  //   }
-  //   try {
-  //     await this.model.destroy({
-  //       where: { id }
-  //     })
-  //     let data = await this.model.findAll()
-  //     res.status(200).json(data)
-  //   } catch (error) {
-  //     res.status(400).json({ error })
-  //   }
-  // }
+  //delete Subscriber
+  async deleteSubscriber (req, res) {
+    let id = req.params.id
+    await this.model.findByPk(id)
+    if (!id) {
+      return res.status(404).json({ error: 'no such subscriber exist' })
+    }
+    try {
+      await this.model.destroy({
+        where: { id }
+      })
+      let data = await this.model.findAll()
+      res.status(200).json(data)
+    } catch (error) {
+      res.status(400).json({ error })
+    }
+  }
 
   // async editClient (req, res) {
   //   const { fullName, email, date, subscriptionType, paymentAmount } = req.body

@@ -21,15 +21,10 @@ class SubscribersRouter {
       '/allSubscriber/:usersId',
       this.controller.getAllSubscribers.bind(this.controller)
     )
-
-    // router.post(
-    //   '/addSubcriber/:usersId',
-    //   this.controller.addSubcriber.bind(this.controller)
-    // )
-    // router.delete(
-    //   '/deleteSubscriber/:id',
-    //   this.controller.deleteSubscriber.bind(this.controller)
-    // )
+    router.delete(
+      '/deleteSubscriber/:id',
+      this.controller.deleteSubscriber.bind(this.controller)
+    )
     // router.put(
     //   '/editSubscriber/:id',
     //   this.controller.editSubscriber.bind(this.controller)
