@@ -71,7 +71,7 @@ class SubscribersController extends BaseController {
 
   //delete Subscriber
   async deleteSubscriber (req, res) {
-    let id = req.params.id
+    const id = req.params.id
     await this.model.findByPk(id)
     if (!id) {
       return res.status(404).json({ error: 'no such subscriber exist' })
@@ -81,29 +81,29 @@ class SubscribersController extends BaseController {
         where: { id }
       })
       let data = await this.model.findAll()
-      res.status(200).json(data)
+      res.status(200).json({ sucess: true, data })
     } catch (error) {
       res.status(400).json({ error })
     }
   }
 
-  // async editClient (req, res) {
-  //   const { fullName, email, date, subscriptionType, paymentAmount } = req.body
-  //   let clientsId = req.params.id
+  // async editSubscriber (req, res) {
+  //   const { fullName, email, date, typesId, usersId } = req.body
+  //   const id = req.params.id
 
   //   try {
-  //     let editedClient = await this.model.findByPk(clientsId)
-  //     if (editedClient) {
-  //       await editedClient.update({
+  //     let editedSubscriber = await this.model.findByPk(id)
+  //     if (editedSubscriber) {
+  //       await editedSubscriber.update({
   //         fullName: fullName,
   //         date: date,
   //         email: email,
-  //         subscriptionType: subscriptionType,
-  //         paymentAmount: paymentAmount
+  //         typesId: typesId,
+  //         usersId: usersId
   //       })
   //     }
-  //     editedClient = await this.model.findByPk(clientsId)
-  //     return res.json(editedClient)
+  //     editedSubscriber = await this.model.findByPk(id)
+  //     return res.json({ sucess: true, editedSubscriber })
   //   } catch (error) {
   //     console.log(error)
   //     return res.status(400).json({ error })

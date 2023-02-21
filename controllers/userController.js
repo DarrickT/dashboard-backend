@@ -15,7 +15,10 @@ class UsersController extends BaseController {
     if (!name || !email || !password) {
       return res
         .status(400)
-        .json({ sucess: false, msg: 'you have some missing information' })
+        .json({
+          sucess: false,
+          msg: 'you have some missing information for signup'
+        })
     }
     console.log('anything')
     try {
@@ -81,6 +84,55 @@ class UsersController extends BaseController {
     } catch (error) {
       res.status(400).json({ error })
     }
+  }
+  //delete types
+  async deleteType (req, res) {
+    const id = req.params.id
+    await this.types.findByPk(id)
+    if (!id) {
+      return res.status(404).json({ error: 'no such type exist' })
+    }
+    try {
+      await this.types.destroy({
+        where: { id }
+      })
+      let data = await this.types.findAll()
+      res.status(200).json({ sucess: true, data })
+    } catch (error) {
+      res.status(400).json({ error })
+    }
+  }
+
+  async logIn (req, res) {
+    const { email, password } = req.body
+
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ success: false, msg: 'you have some missing information' })
+    }
+
+    const user = await this.model.findOne({ where: { email } })
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, msg: 'user does not exist' })
+    }
+
+    const compare = await bcrypt.compare(password, user.password)
+
+    if (!compare) {
+      return res
+        .status(403)
+        .json({ success: false, msg: 'incorrect password provided' })
+    }
+    const payload = { id: user.id, name: user.name }
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: '1hour'
+    })
+
+    return res.json({ success: true, token })
   }
 }
 module.exports = UsersController

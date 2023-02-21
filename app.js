@@ -4,6 +4,9 @@ require('dotenv').config()
 //import models
 const db = require('./models/index.js')
 
+//import middlewares
+const authMiddleware = require('./middleware/auth')
+
 // import controllers
 const UsersController = require('./controllers/userController')
 const SubscribersController = require('./controllers/subscribersController')
@@ -17,7 +20,7 @@ const UsersRouter = require('./routers/usersRouter')
 const SubscribersRouter = require('./routers/subscribersRouter')
 
 // intialise routers
-const usersRouter = new UsersRouter(usersController).routes()
+const usersRouter = new UsersRouter(usersController, authMiddleware).routes()
 const subscribersRouter = new SubscribersRouter(subscribersController).routes()
 
 //Putting express together
@@ -28,6 +31,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 app.use('/users', usersRouter)
+// app.use(authMiddleware)
 app.use('/subscribers', subscribersRouter)
 
 const PORT = process.env.PORT || 8080
