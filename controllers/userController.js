@@ -13,12 +13,10 @@ class UsersController extends BaseController {
     const { name, email, password } = req.body
 
     if (!name || !email || !password) {
-      return res
-        .status(400)
-        .json({
-          sucess: false,
-          msg: 'you have some missing information for signup'
-        })
+      return res.status(400).json({
+        sucess: false,
+        msg: 'you have some missing information for signup'
+      })
     }
     console.log('anything')
     try {
@@ -100,6 +98,30 @@ class UsersController extends BaseController {
       res.status(200).json({ sucess: true, data })
     } catch (error) {
       res.status(400).json({ error })
+    }
+  }
+  async editType (req, res) {
+    const id = req.params
+    const { type, price, cost, usersId } = req.body
+    if (!type || !price || !cost || !usersId) {
+      return res
+        .status(400)
+        .json({ sucess: false, msg: 'you have some missing information' })
+    }
+    try {
+      let output = await this.types.findByPk(id)
+      if (output) {
+        await output.update({
+          type: type,
+          price: price,
+          cost: cost,
+          usersId: usersId
+        })
+      }
+      output = await this.types.findByPk(id)
+      res.status(200).json({ sucess: true, output })
+    } catch (error) {
+      return res.status(400).json({ error })
     }
   }
 

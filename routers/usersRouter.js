@@ -22,6 +22,7 @@ class UsersRouter {
       '/deleteType/:id',
       this.controller.deleteType.bind(this.controller)
     )
+    router.put('/editType/:id', this.controller.editType.bind(this.controller))
 
     return router
   }

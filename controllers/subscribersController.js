@@ -42,6 +42,17 @@ class SubscribersController extends BaseController {
       res.status(400).json({ error })
     }
   }
+  // how to get total subscriber count
+  static async getTotalSubscriberCount () {
+    try {
+      const count = await this.model.count()
+      return count
+    } catch (error) {
+      console.error('Error getting subscriber count:', error)
+      return null
+    }
+  }
+
   //filterByYear
   async filterByYear (req, res) {
     const { usersId, year } = req.params
@@ -62,8 +73,10 @@ class SubscribersController extends BaseController {
           }
         }
       })
+      const subscriberCount =
+        await this.model.dataByYear.getTotalSubscriberCount()
 
-      return res.json({ sucess: true, dataByYear })
+      return res.json({ sucess: true, dataByYear, subscriberCount })
     } catch (error) {
       res.status(400).json({ error })
     }
@@ -86,29 +99,43 @@ class SubscribersController extends BaseController {
       res.status(400).json({ error })
     }
   }
-
-  // async editSubscriber (req, res) {
-  //   const { fullName, email, date, typesId, usersId } = req.body
-  //   const id = req.params.id
+  // editSubscriber = async (req, res) => {
+  //   let { fullName, email, date, typesId, usersId } = req.body
+  //   let id = req.params.id
+  //   let subscriberToEdit = await this.model.findByPk(id)
+  //   if (!id) {
+  //     return res.status(404).json({ error: 'no such subscriber exist' })
+  //   }
 
   //   try {
-  //     let editedSubscriber = await this.model.findByPk(id)
-  //     if (editedSubscriber) {
-  //       await editedSubscriber.update({
-  //         fullName: fullName,
-  //         date: date,
-  //         email: email,
-  //         typesId: typesId,
-  //         usersId: usersId
-  //       })
-  //     }
-  //     editedSubscriber = await this.model.findByPk(id)
-  //     return res.json({ sucess: true, editedSubscriber })
+  //     await subscriberToEdit.update({ fullName, email, date, typesId, usersId })
+  //     let data = await this.model.findAll()
+  //     res.status(200).json({ sucess: true, data })
   //   } catch (error) {
-  //     console.log(error)
-  //     return res.status(400).json({ error })
+  //     res.status(400).json({ error })
   //   }
   // }
+
+  async editSubscriber (req, res) {
+    const { id } = req.params
+    const { fullName, email, date, typesId, usersId } = req.body
+    try {
+      let output = await this.model.findByPk(id)
+      if (output) {
+        await output.update({
+          fullName: fullName,
+          email: email,
+          date: date,
+          typesId: typesId,
+          usersId: usersId
+        })
+      }
+      output = await this.model.findByPk(id)
+      res.status(200).json({ sucess: true, output })
+    } catch (error) {
+      return res.status(400).json({ error })
+    }
+  }
 }
 
 module.exports = SubscribersController

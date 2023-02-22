@@ -25,10 +25,10 @@ class SubscribersRouter {
       '/deleteSubscriber/:id',
       this.controller.deleteSubscriber.bind(this.controller)
     )
-    // router.put(
-    //   '/editSubscriber/:id',
-    //   this.controller.editSubscriber.bind(this.controller)
-    // )
+    router.put(
+      '/editSubscriber/:id',
+      this.controller.editSubscriber.bind(this.controller)
+    )
     return router
   }
 }
