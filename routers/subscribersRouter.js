@@ -29,6 +29,7 @@ class SubscribersRouter {
       '/editSubscriber/:id',
       this.controller.editSubscriber.bind(this.controller)
     )
+
     return router
   }
 }

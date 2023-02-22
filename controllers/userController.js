@@ -1,6 +1,7 @@
 const BaseController = require('./baseController')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const types = require('../models/types')
 
 class UsersController extends BaseController {
   constructor (model, types) {
@@ -100,13 +101,14 @@ class UsersController extends BaseController {
       res.status(400).json({ error })
     }
   }
+
   async editType (req, res) {
-    const id = req.params
+    const id = req.params.id
     const { type, price, cost, usersId } = req.body
     if (!type || !price || !cost || !usersId) {
       return res
         .status(400)
-        .json({ sucess: false, msg: 'you have some missing information' })
+        .json({ success: false, msg: 'Missing information' })
     }
     try {
       let output = await this.types.findByPk(id)
@@ -117,14 +119,14 @@ class UsersController extends BaseController {
           cost: cost,
           usersId: usersId
         })
+        return res.status(200).json({ success: true, output })
+      } else {
+        return res.status(404).json({ success: false, msg: 'Type not found' })
       }
-      output = await this.types.findByPk(id)
-      res.status(200).json({ sucess: true, output })
     } catch (error) {
-      return res.status(400).json({ error })
+      return res.status(400).json({ success: false, error: error.message })
     }
   }
-
   async logIn (req, res) {
     const { email, password } = req.body
 
