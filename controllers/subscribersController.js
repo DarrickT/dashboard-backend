@@ -103,14 +103,13 @@ class SubscribersController extends BaseController {
   async editSubscriber (req, res) {
     const id = req.params.id
     const { fullName, email, date, typesId, usersId } = req.body
-
-    if (!fullName || !price || !email || !date || !typesId || !usersId) {
+    if (!fullName || !email || !date || !typesId || !usersId) {
       return res
         .status(400)
         .json({ success: false, msg: 'Missing information' })
     }
     try {
-      let output = await this.types.findByPk(id)
+      let output = await this.model.findByPk(id)
       if (output) {
         await output.update({
           fullName: fullName,
