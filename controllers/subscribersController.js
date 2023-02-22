@@ -37,19 +37,10 @@ class SubscribersController extends BaseController {
       const allSubscribers = await this.model.findAll({
         where: { usersId: usersId }
       })
-      return res.json({ sucess: true, allSubscribers })
+      const subscriberCount = allSubscribers.length
+      return res.json({ sucess: true, allSubscribers, subscriberCount })
     } catch (error) {
       res.status(400).json({ error })
-    }
-  }
-  // how to get total subscriber count
-  static async getTotalSubscriberCount () {
-    try {
-      const count = await this.model.count()
-      return count
-    } catch (error) {
-      console.error('Error getting subscriber count:', error)
-      return null
     }
   }
 
