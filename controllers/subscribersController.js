@@ -53,18 +53,17 @@ class SubscribersController extends BaseController {
     }
   }
 
-  //filterByYear
   async filterByYear (req, res) {
     const { usersId, year } = req.params
     const startDate = new Date(`${year}-01-01 00:00:00`)
     const endDate = new Date(`${year}-12-31 23:59:59`)
-
     if (!usersId || !year) {
       return res
         .status(400)
-        .json({ sucess: false, msg: 'you have some missing information' })
+        .json({ success: false, msg: 'Missing information' })
     }
     try {
+      // Replace `this.model` with the actual Sequelize model for the `model` table
       const dataByYear = await this.model.findAll({
         where: {
           usersId: usersId,
@@ -73,12 +72,11 @@ class SubscribersController extends BaseController {
           }
         }
       })
-      const subscriberCount =
-        await this.model.dataByYear.getTotalSubscriberCount()
-
-      return res.json({ sucess: true, dataByYear, subscriberCount })
+      // Replace this with a proper method to calculate the total subscriber count
+      const subscriberCount = dataByYear.length
+      return res.json({ success: true, dataByYear, subscriberCount })
     } catch (error) {
-      res.status(400).json({ error })
+      return res.status(400).json({ success: false, error: error.message })
     }
   }
 
